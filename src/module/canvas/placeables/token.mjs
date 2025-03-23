@@ -37,11 +37,10 @@ export default class DrawSteelToken extends foundry.canvas.placeables.Token {
 
     const stamina = Number(data.value);
 
-    // Creates a normalized range of 0 to (max stamina - min stamina) used for calculating the token bar percentage
-    // Needed to handle character's negative stamina
-    const minimumStamina = this.actor.system.stamina.min;
-    const totalStamina = data.max - minimumStamina;
-    const adjustedValue = stamina - minimumStamina;
+    // Creates a normalized range of 0 to (max stamina + winded) used for calculating the token bar percentage
+    const winded = this.actor.system.stamina.winded;
+    const totalStamina = data.max + winded;
+    const adjustedValue = stamina + winded;
     const barPct = Math.clamp(adjustedValue, 0, totalStamina) / totalStamina;
 
     // Determine sizing
@@ -59,7 +58,7 @@ export default class DrawSteelToken extends foundry.canvas.placeables.Token {
       if (number === 0) color = Color.fromRGB([1 - (colorPct / 2), colorPct, 0]);
       else color = Color.fromRGB([0.5 * colorPct, 0.7 * colorPct, 0.5 + (colorPct / 2)]);
     } else {
-      const colorPct = Math.clamp(adjustedValue, 0, Math.abs(minimumStamina)) / Math.abs(minimumStamina);
+      const colorPct = Math.clamp(adjustedValue, 0, winded) / winded;
       if (number === 0) color = Color.fromRGB([colorPct + (1 - colorPct) * 0.2, 0, 0]);
       else color = Color.fromRGB([0, 0, 0.5 - ((1 - colorPct) * 0.4)]);
     }

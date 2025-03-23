@@ -40,12 +40,8 @@
 
   {{!-- Initiative --}}
   <div class="token-initiative">
-    {{#if isOwner}}
     <a class="activate-combatant" data-action="activateCombatant" data-tooltip="DRAW_STEEL.Combat.Initiative.Actions.{{activateTooltip}}">
       {{initiativeCount}} <i class="fa-solid {{initiativeSymbol}}"></i>
     </a>
-    {{else}}
-    <span class="activate-combatant">{{initiativeCount}} <i class="fa-solid {{initiativeSymbol}}"></i></span>
-    {{/if}}
   </div>
 </li>

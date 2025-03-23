@@ -26,7 +26,6 @@ export default class DrawSteelCharacterSheet extends DrawSteelActorSheet {
     },
     stats: {
       template: systemPath("templates/actor/character/stats.hbs"),
-      templates: ["characteristics.hbs", "combat.hbs", "movement.hbs", "immunities-weaknesses.hbs"].map(t => systemPath(`templates/actor/shared/partials/stats/${t}`)),
       scrollable: [""],
     },
     features: {
@@ -51,7 +50,6 @@ export default class DrawSteelCharacterSheet extends DrawSteelActorSheet {
     },
     biography: {
       template: systemPath("templates/actor/character/biography.hbs"),
-      templates: ["languages.hbs", "biography.hbs", "gm-notes.hbs"].map(t => systemPath(`templates/actor/shared/partials/biography/${t}`)),
       scrollable: [""],
     },
   };
