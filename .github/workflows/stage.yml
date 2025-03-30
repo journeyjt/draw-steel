@@ -1,6 +1,5 @@
 name: Upload Repo to Azure File Share on Beta Tag
 
-# Trigger only when a tag ending in "-beta" is pushed.
 on:
   push:
     tags:
@@ -10,27 +9,30 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Check out the repository.
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      # Step 2: Log in to Azure using your stored service principal credentials.
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Step 3: Prepare files for upload by excluding unwanted directories.
+      # New Build Steps
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run prepareRelease
+
+      # Optional: List files to verify the build output (e.g., in public/css)
+      - name: List Build Output
+        run: ls -la public/css
+
       - name: Prepare files for upload
         run: |
-          # Create a temporary directory for the filtered files.
           mkdir filtered_upload
-          # Use rsync to copy all files except .github and .vscode directories.
           rsync -av --exclude='.github' --exclude='.vscode' ./ filtered_upload/
-          # If needed, add additional exclusions here.
-          # Example: To exclude a "tests" folder, add: --exclude='tests'
 
-      # Step 4: Upload the prepared files to the Azure File Share.
       - name: Upload to Azure File Share (Data/systems/draw-steel)
         env:
           AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
